@@ -24,10 +24,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Use the authentication routes under /api/v1/auth
-app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/auth', authRoutes);  // This prefix is used for all authentication-related routes, including Google login and logout.
 
-// Use the user routes under /api/v1/users
-app.use('/api/v1/users', userRoutes);
+// Use the user routes under /api/v1/users 
+app.use('/api/v1/users', userRoutes); // This prefix is used for user-related routes like retrieving the profile or deleting the account.
 
 // Error handling middleware
 app.use(errorHandler);

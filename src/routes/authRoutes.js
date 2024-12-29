@@ -4,7 +4,7 @@ import passport from 'passport';
 
 const authRouter = express.Router();
 
-// Route to initiate Google OAuth2 login
+// Route to initiate Google OAuth2 login (/api/v1/auth/google)
 authRouter.get(
   '/google',
   passport.authenticate('google', {
@@ -12,7 +12,7 @@ authRouter.get(
   })
 );
 
-// Google OAuth2 callback route
+// callback route registered with Google (/api/v1/auth/google/callback)
 authRouter.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
@@ -21,8 +21,8 @@ authRouter.get(
   }
 );
 
-// Route to check if the user is logged in
-authRouter.get('/me', (req, res) => {
+// Route to check if the user is logged in (/api/v1/auth/user)
+authRouter.get('/user', (req, res) => {
   if (req.isAuthenticated()) {
     res.json(req.user);
   } else {
@@ -30,7 +30,7 @@ authRouter.get('/me', (req, res) => {
   }
 });
 
-// Route to log out the user
+// Route to log out the user (/api/v1/auth/logout)
 authRouter.post('/logout', (req, res) => {
   req.logout((err) => {
     if (err) {
