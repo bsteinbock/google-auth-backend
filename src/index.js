@@ -38,7 +38,10 @@ app.use(
     secret: process.env.SESSION_SECRET, // Use your session secret here
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: true }, // For development, set `secure` to false
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // Set secure to true only in production
+      httpOnly: true,
+    },
   })
 );
 
@@ -70,6 +73,17 @@ app.get('/api/v1/me', (req, res) => {
   } else {
     res.status(401).send('Not authenticated');
   }
+});
+
+// Route to log out the user
+app.post('/api/v1/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).send('Error logging out');
+    }
+    res.clearCookie('connect.sid'); // Clear the session cookie
+    res.status(200).send('Logged out successfully');
+  });
 });
 
 // Start the server
