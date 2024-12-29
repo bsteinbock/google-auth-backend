@@ -1,59 +1,38 @@
 import express from 'express';
 import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import session from 'express-session'; // Import express-session
-import dotenv from 'dotenv';
-dotenv.config(); // Load environment variables
-
-import apiRoutes from './routes/apiRoutes.js'; // Import the API routes
+import config from './config.js'; // Import config
+import { configurePassport } from './passportConfig.js'; // Import passport config
+import { configureSession } from './sessionConfig.js'; // Import session config
+import authRoutes from './routes/authRoutes.js'; // Import authentication routes
+import userRoutes from './routes/userRoutes.js'; // Import user-related routes
+import { errorHandler } from './middlewares.js'; // Import error handler middleware
 
 const app = express();
 
-// Configure the passport Google OAuth strategy
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5050/api/v1/auth/google/callback',
-    },
-    (accessToken, refreshToken, profile, done) => {
-      return done(null, profile);
-    }
-  )
-);
-
-// Serialize user info into the session
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-// Deserialize user info from the session
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
-// Use express-session to handle session management
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET, // Use your session secret here
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production', // Set secure to true only in production
-      httpOnly: true,
-    },
-  })
-);
-
 // Initialize Passport.js
+configurePassport();
+
+// Use session configuration
+app.use(configureSession());
+
+// Initialize Passport.js session
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Use the routes defined in apiRoutes.js
-app.use('/api/v1', apiRoutes);
+// Body parsing middleware (for handling JSON and URL-encoded bodies)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Use the authentication routes under /api/v1/auth
+app.use('/api/v1/auth', authRoutes);
+
+// Use the user routes under /api/v1/users
+app.use('/api/v1/users', userRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
 
 // Start the server
-app.listen(5050, () => {
-  console.log('Server running on http://localhost:5050');
+app.listen(config.port, () => {
+  console.log(`Server running on http://localhost:${config.port}`);
 });
