@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import config from './config.js';
+import User from './models/user.js';
 
 export const configurePassport = () => {
   // Configure Google OAuth2 strategy
@@ -11,8 +12,23 @@ export const configurePassport = () => {
         clientSecret: config.googleClientSecret,
         callbackURL: config.callbackURL,
       },
-      (accessToken, refreshToken, profile, done) => {
-        return done(null, profile);
+      async (accessToken, refreshToken, profile, done) => {
+        const defaultUser = {
+          fullName: profile.displayName,
+          email: profile.emails[0].value,
+          picture: profile.photos[0].value,
+          googleId: profile.id,
+        };
+
+        const user = await User.findOrCreate({
+          where: { googleId: profile.id },
+          defaults: defaultUser,
+        }).catch((err) => {
+          console.log('Error signing up', err);
+          done(err, null);
+        });
+
+        if (user && user[0]) return done(null, user && user[0]);
       }
     )
   );
@@ -23,7 +39,14 @@ export const configurePassport = () => {
   });
 
   // Deserialize user info from the session
-  passport.deserializeUser((user, done) => {
-    done(null, user);
+  passport.deserializeUser(async (user, done) => {
+    const outUser = await User.findOne({ where: { id: user.id } }).catch(
+      (err) => {
+        console.log('Error deserializing', err);
+        done(err, null);
+      }
+    );
+
+    done(null, outUser);
   });
 };

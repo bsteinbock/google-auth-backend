@@ -12,6 +12,11 @@ const config = {
     process.env.CALLBACK_URL ||
     'http://localhost:5050/api/v1/auth/google/callback',
   port: process.env.PORT || 5050,
+  dbSchema: process.env.DB_NAME || 'google_test',
+  dbUser: process.env.DB_USER,
+  dbPwd: process.env.DB_PASS,
+  dbServer: process.env.DB_SERVER || 'localhost',
+  dbPort: process.env.DB_PORT || 4408,
 };
 
 if (
