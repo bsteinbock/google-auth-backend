@@ -1,6 +1,8 @@
 // authRoutes.js
 import express from 'express';
 import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import config from '../config.js'; // Import config
 
 const authRouter = express.Router();
 
@@ -24,7 +26,12 @@ authRouter.get(
 // Route to check if the user is logged in (/api/v1/auth/user)
 authRouter.get('/user', (req, res) => {
   if (req.isAuthenticated()) {
-    res.json(req.user);
+    const { user } = req;
+    // Generate JWT token here
+    const token = jwt.sign({ user }, config.jwtSecret, {
+      expiresIn: '1d',
+    });
+    res.json({ token, user }); // Send token and user to frontend
   } else {
     res.status(401).send('Not authenticated');
   }

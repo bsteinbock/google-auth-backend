@@ -4,6 +4,7 @@ dotenv.config(); // Load environment variables from the .env file
 
 // Environment variable validation
 const config = {
+  jwtSecret: process.env.JWT_SECRET,
   googleClientID: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   sessionSecret: process.env.SESSION_SECRET,
