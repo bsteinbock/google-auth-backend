@@ -18,6 +18,7 @@ const config = {
   dbPwd: process.env.DB_PASS,
   dbServer: process.env.DB_SERVER || 'localhost',
   dbPort: process.env.DB_PORT || 4408,
+  sqliteDbUrl: process.env.SQLITE_DB_URL || './data/database.sqlite',
 };
 
 if (
