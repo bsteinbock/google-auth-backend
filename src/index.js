@@ -36,6 +36,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Use the authentication routes under /api/v1/auth
+app.use('/', () => {
+  console.log('Hello from the server!');
+}); // This prefix is used for all authentication-related routes, including Google login and logout.
+
+// Use the authentication routes under /api/v1/auth
 app.use('/api/v1/auth', authRoutes); // This prefix is used for all authentication-related routes, including Google login and logout.
 
 // Use the user routes under /api/v1/users
@@ -71,5 +76,5 @@ sequelize.sync();
 
 // Start the server
 app.listen(config.port, () => {
-  console.log(`Server running on http://localhost:${config.port}`);
+  console.log(`Server running on port ${config.port}`);
 });
