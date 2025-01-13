@@ -6,7 +6,7 @@ import { authenticateJWT } from '../middlewares.js'; // Example of a middleware 
 const userRouter = express.Router();
 
 // Get all users for the authenticated user
-userRouter.get('/', authenticateJWT, async (req, res) => {
+userRouter.get('/', async (req, res) => {
   try {
     const users = await User.findAll();
     res.json(users);
