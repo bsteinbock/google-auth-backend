@@ -4,7 +4,7 @@ dotenv.config(); // Load environment variables from the .env file
 
 // Environment variable validation
 const config = {
-  webserverPort: process.env.PORT || 5050,
+  webserverPort: process.env.WEBSERVER_PORT || 5050,
   jwtSecret: process.env.JWT_SECRET,
   googleClientID: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
