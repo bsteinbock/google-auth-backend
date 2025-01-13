@@ -18,7 +18,7 @@ const app = express();
 app.use(
   cors({
     origin: 'http://localhost:3002', // Replace with your frontend's URL
-    credentials: config.nodeEnv !== 'development',
+    credentials: true,
   })
 );
 
@@ -75,6 +75,6 @@ sequelize.sync();
 })();
 
 // Start the server
-app.listen(config.port, () => {
-  console.log(`Server running on port ${config.port}`);
+app.listen(config.webserverPort, () => {
+  console.log(`Server running on port ${config.webserverPort}`);
 });

@@ -19,6 +19,8 @@ authRouter.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
+    console.log('User authenticated via Google');
+    console.log(res);
     res.redirect('http://localhost:3002'); // Redirect to the React app after login
   }
 );
