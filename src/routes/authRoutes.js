@@ -22,7 +22,14 @@ authRouter.get(
     console.log('===== Processing User authenticated via Google ==== ');
     console.log(req.user);
     console.log('===== Ready to call back to frontend ==== ');
-    res.redirect(`${config.reactAppUrl}`); // Redirect to the React app after login
+    const { user } = req;
+    // Generate JWT token here
+    const token = jwt.sign({ user }, config.jwtSecret, {
+      expiresIn: '1d',
+    });
+    res.redirect(
+      `${config.reactAppUrl}?token=${token}&email=${user.email}&fullName=${user.fullName}`
+    ); // Redirect to the React app after login
   }
 );
 
