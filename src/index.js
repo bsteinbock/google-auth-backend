@@ -17,7 +17,7 @@ const app = express();
 // Alternatively, enable CORS only for specific origins
 app.use(
   cors({
-    origin: 'http://localhost:3002', // Replace with your frontend's URL
+    origin: `${config.reactAppUrl}`, // Replace with your frontend's URL
     credentials: true,
   })
 );

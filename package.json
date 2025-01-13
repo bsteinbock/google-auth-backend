@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "debug": "node --inspect ./src/index.js"
+    "debug": "node --inspect ./src/index.js",
+    "start": "node ./src/index.js"
   },
   "dependencies": {
     "cookie-session": "^2.1.0",
@@ -10,7 +11,6 @@
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.12.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "sequelize": "^6.37.5",

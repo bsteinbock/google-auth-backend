@@ -4,7 +4,8 @@ dotenv.config(); // Load environment variables from the .env file
 
 // Environment variable validation
 const config = {
-  webserverPort: process.env.WEBSERVER_PORT || 5050,
+  webserverPort: process.env.WEBSERVER_PORT || 15050,
+  reactAppUrl: process.env.REACT_APP_URL || 'http://localhost:3002',
   jwtSecret: process.env.JWT_SECRET,
   googleClientID: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -13,7 +14,6 @@ const config = {
   callbackURL:
     process.env.GOOGLE_CALLBACK_URL ||
     'http://localhost:5050/api/v1/auth/google/callback',
-  port: process.env.PORT || 5050,
   dbSchema: process.env.DB_NAME || 'google_test',
   dbUser: process.env.DB_USER,
   dbPwd: process.env.DB_PASS,
